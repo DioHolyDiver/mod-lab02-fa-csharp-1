@@ -10,7 +10,6 @@ namespace fans
         public string Name { get; }
         public Dictionary<char, State> Transitions { get; } = new Dictionary<char, State>();
         public bool IsFinal { get; }
-
         public State(string name, bool isFinal)
         {
             Name = name;
