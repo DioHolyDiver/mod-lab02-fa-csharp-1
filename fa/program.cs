@@ -26,7 +26,6 @@ namespace fans
         public bool Run(string input)
         {
             State current = StartState;
-
             foreach (char ch in input)
             {
                 if (!current.Transitions.ContainsKey(ch))
@@ -36,6 +35,7 @@ namespace fans
             return current.IsFinal;
         }
     }
+
     public class FA1 : FiniteAutomata
     {
         public FA1() : base(CreateStates()) { }
