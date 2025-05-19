@@ -26,6 +26,7 @@ namespace fans
         public bool Run(string input)
         {
             State current = StartState;
+
             foreach (char ch in input)
             {
                 if (!current.Transitions.ContainsKey(ch))
@@ -40,16 +41,16 @@ namespace fans
         public FA1() : base(CreateStates()) { }
         private static State CreateStates()
         {
-            var a = new State("a", false);
-            var b = new State("b", false);
-            var c = new State("c", true);
-            a.Transitions['0'] = b;
-            a.Transitions['1'] = a;
-            b.Transitions['1'] = c;
-            b.Transitions['0'] = a;
-            c.Transitions['0'] = c;
-            c.Transitions['1'] = c;
-            return a;
+            var s0 = new State("s0", false);
+            var s1 = new State("s1", false);
+            var F = new State("F", true);
+            s0.Transitions['0'] = s1;
+            s0.Transitions['1'] = s0;
+            s1.Transitions['1'] = F;
+            s1.Transitions['0'] = s0;
+            F.Transitions['0'] = s0;
+            F.Transitions['1'] = F;
+            return s0;
         }
     }
     public class FA2 : FiniteAutomata
