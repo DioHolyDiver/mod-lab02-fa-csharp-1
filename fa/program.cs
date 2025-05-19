@@ -38,31 +38,44 @@ namespace fans
             return current.IsFinal;
         }
     }
-    public class FA1 : FiniteAutomata
+    public class FA1
+{
+    private string currentState;
+
+    public FA1() => Reset();
+
+    public void Transition(char inputChar)
     {
-        public FA1() : base(CreateStates()) { }
-        private static State CreateStates()
+        switch (currentState)
         {
-            var start = new State("start", false);
-            var foundOne = new State("foundOne", false);
-            var foundZero = new State("foundZero", false);
-            var finalState = new State("final", true);
-            var invalidState = new State("invalid", false);
-
-            start.Transitions['1'] = foundOne;
-            start.Transitions['0'] = foundZero;
-
-            foundOne.Transitions['1'] = foundOne;
-            foundOne.Transitions['0'] = finalState;
-
-            foundZero.Transitions['1'] = finalState;
-            foundZero.Transitions['0'] = invalidState;
-            foundOne.Transitions['0'] = invalidState;
-            start.Transitions['2'] = invalidState;
-
-            return start;
+            case "q0":
+                if (inputChar == '0') currentState = "q1";
+                else currentState = "q0"; 
+                break;
+            case "q1":
+                if (inputChar == '0') currentState = "q0";
+                else currentState = "q2"; 
+                break;
+            case "q2":
+                if (inputChar == '0') currentState = "q0";
+                else currentState = "q2"; 
+                break;
         }
     }
+
+    public bool? Run(string inputString)
+    {
+        foreach (char c in inputString)
+        {
+            Transition(c);
+        }
+        return IsFinal(currentState); 
+    }
+
+    private bool IsFinal(string state) => state == "q2";
+
+    public void Reset() => currentState = "q0";
+}
     public class FA2 : FiniteAutomata
     {
         public FA2() : base(CreateStates()) { }
