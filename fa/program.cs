@@ -17,7 +17,6 @@ namespace fans
             IsFinal = isFinal;
         }
     }
-
     public abstract class FiniteAutomata
     {
         protected readonly State StartState;
@@ -39,27 +38,31 @@ namespace fans
             return current.IsFinal;
         }
     }
-
     public class FA1 : FiniteAutomata
     {
-        public FA1() : base(null) { }
-
-        public override bool Run(string s)
+        public FA1() : base(CreateStates()) { }
+        private static State CreateStates()
         {
-            if (s.Length == 0 || s[s.Length - 1] != '1')
-                return false;
+            var start = new State("start", false);
+            var foundOne = new State("foundOne", false);
+            var foundZero = new State("foundZero", false);
+            var finalState = new State("final", true);
+            var invalidState = new State("invalid", false);
 
-            int onesCount = 0;
-            foreach (char c in s)
-            {
-                if (c == '1')
-                    onesCount++;
-            }
+            start.Transitions['1'] = foundOne;
+            start.Transitions['0'] = foundZero;
 
-            return onesCount % 2 == 0;
+            foundOne.Transitions['1'] = foundOne;
+            foundOne.Transitions['0'] = finalState;
+
+            foundZero.Transitions['1'] = finalState;
+            foundZero.Transitions['0'] = invalidState;
+            foundOne.Transitions['0'] = invalidState;
+            start.Transitions['2'] = invalidState;
+
+            return start;
         }
     }
-
     public class FA2 : FiniteAutomata
     {
         public FA2() : base(CreateStates()) { }
