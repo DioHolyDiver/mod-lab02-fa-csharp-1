@@ -19,6 +19,7 @@ namespace fans
     public abstract class FiniteAutomata
     {
         protected readonly State StartState;
+
         protected FiniteAutomata(State startState)
         {
             StartState = startState;
