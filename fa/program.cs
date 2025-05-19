@@ -36,23 +36,22 @@ namespace fans
         }
     }
     public class FA1 : FiniteAutomata
-{
-    public FA1() : base(CreateStates()) { }
-    private static State CreateStates()
     {
-        var a = new State("a", false);
-        var b = new State("b", false);
-        var c = new State("c", true);
-        a.Transitions['0'] = b;
-        a.Transitions['1'] = a;
-        b.Transitions['1'] = c;
-        b.Transitions['0'] = a;
-        c.Transitions['0'] = a;
-        c.Transitions['1'] = c;
-
-        return a;
+        public FA1() : base(CreateStates()) { }
+        private static State CreateStates()
+        {
+            var a = new State("a", false);
+            var b = new State("b", false);
+            var c = new State("c", true);
+            a.Transitions['0'] = b;
+            a.Transitions['1'] = a;
+            b.Transitions['1'] = c;
+            b.Transitions['0'] = a;
+            c.Transitions['0'] = c;
+            c.Transitions['1'] = c;
+            return a;
+        }
     }
-}
     public class FA2 : FiniteAutomata
     {
         public FA2() : base(CreateStates()) { }
