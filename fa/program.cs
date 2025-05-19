@@ -27,7 +27,7 @@ namespace fans
             StartState = startState;
         }
 
-        public bool Run(string input)
+        public virtual bool Run(string input)
         {
             State current = StartState;
             foreach (char ch in input)
@@ -42,24 +42,21 @@ namespace fans
 
     public class FA1 : FiniteAutomata
     {
-        public FA1() : base(CreateStates()) { }
+        public FA1() : base(null) { }
 
-        private static State CreateStates()
+        public override bool Run(string s)
         {
-            var q0 = new State("q0", false);
-            var q1 = new State("q1", false);
-            var q2 = new State("q2", true);
+            if (s.Length == 0 || s[s.Length - 1] != '1')
+                return false;
 
-            q0.Transitions['0'] = q0;
-            q0.Transitions['1'] = q1;
+            int onesCount = 0;
+            foreach (char c in s)
+            {
+                if (c == '1')
+                    onesCount++;
+            }
 
-            q1.Transitions['0'] = q1;
-            q1.Transitions['1'] = q2;
-
-            q2.Transitions['0'] = q2;
-            q2.Transitions['1'] = q0;
-
-            return q0;
+            return onesCount % 2 == 0;
         }
     }
 
