@@ -35,7 +35,6 @@ namespace fans
             return current.IsFinal;
         }
     }
-
     public class FA1 : FiniteAutomata
     {
         public FA1() : base(CreateStates()) { }
