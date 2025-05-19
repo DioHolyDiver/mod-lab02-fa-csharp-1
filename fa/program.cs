@@ -43,16 +43,12 @@ namespace fans
             var start = new State("start", false);
             var afterZero = new State("after_zero", false);
             var accept = new State("accept", true);
-            var reject = new State("reject", false);
-
             start.Transitions['0'] = afterZero;
             start.Transitions['1'] = start;
             afterZero.Transitions['1'] = accept;
-            afterZero.Transitions['0'] = reject;
-            accept.Transitions['0'] = reject;
+            afterZero.Transitions['0'] = start;
+            accept.Transitions['0'] = start;
             accept.Transitions['1'] = accept;
-            reject.Transitions['0'] = reject;
-            reject.Transitions['1'] = reject;
             return start;
         }
     }
