@@ -7,9 +7,9 @@ namespace fans
 {
     public class State
     {
-        public string Name { get; set; }
+        public string Name { get; }
         public Dictionary<char, State> Transitions { get; } = new Dictionary<char, State>();
-        public bool IsFinal { get; set; }
+        public bool IsFinal { get; }
 
         public State(string name, bool isFinal)
         {
