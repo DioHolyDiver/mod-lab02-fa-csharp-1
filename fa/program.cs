@@ -3,64 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-namespace fans
-{
-    public class State
-    {
-        public string Name { get; }
-        public Dictionary<char, State> Transitions { get; } = new Dictionary<char, State>();
-        public bool IsFinal { get; }
-
-        public State(string name, bool isFinal)
-        {
-            Name = name;
-            IsFinal = isFinal;
-        }
-    }
-
-    public abstract class FiniteAutomata
-    {
-        protected readonly State StartState;
-
-        protected FiniteAutomata(State startState)
-        {
-            StartState = startState;
-        }
-
-        public virtual bool Run(string input)
-        {
-            State current = StartState;
-            foreach (char ch in input)
-            {
-                if (!current.Transitions.ContainsKey(ch)) return false;
-                current = current.Transitions[ch];
-            }
-            return current.IsFinal;
-        }
-    }
-
-    public class FA1 : FiniteAutomata
-    {
-        public FA1() : base(CreateStates()) {}
-
-        private static State CreateStates()
-        {
-            var q0 = new State("q0", false);
-            var q1 = new State("q1", false);
-            var q2 = new State("q2", true);
-
-            q0.Transitions['0'] = q1;
-            q0.Transitions['1'] = q0;
-
-            q1.Transitions['0'] = q0;
-            q1.Transitions['1'] = q2;
-
-            q2.Transitions['0'] = q0;
-            q2.Transitions['1'] = q2;
-
-            return q0;
-        }
-    }
+Failed TestMethod3 [10 ms]
+  Error Message:
+   Assert.IsTrue failed. 
+  Stack Trace:
+     at NET.UnitTest1.TestMethod3() in D:\a\mod-lab02-fa-csharp\mod-lab02-fa-csharp\fa.Tests\UnitTest1.cs:line 31
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed TestMethod5 [< 1 ms]
+  Error Message:
+   Assert.IsTrue failed. 
+  Stack Trace:
+     at NET.UnitTest1.TestMethod5() in D:\a\mod-lab02-fa-csharp\mod-lab02-fa-csharp\fa.Tests\UnitTest1.cs:line 47
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
 
     public class FA2 : FiniteAutomata
     {
