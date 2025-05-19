@@ -41,19 +41,14 @@ namespace fans
 
     public class FA1 : FiniteAutomata
     {
-        private string _currentState;
-        
-        public FA1() : base(CreateStates())
-        {
-            Reset();
-        }
+        public FA1() : base(CreateStates()) {}
 
         private static State CreateStates()
         {
             var q0 = new State("q0", false);
             var q1 = new State("q1", false);
             var q2 = new State("q2", true);
-            
+
             q0.Transitions['0'] = q1;
             q0.Transitions['1'] = q0;
 
@@ -65,37 +60,8 @@ namespace fans
 
             return q0;
         }
-
-        public override bool Run(string input)
-        {
-            State current = StartState;
-            foreach (var ch in input)
-            {
-                if (!current.Transitions.ContainsKey(ch)) return false;
-                current = current.Transitions[ch];
-            }
-            return current.IsFinal;
-        }
-
-        public void Reset()
-        {
-            _currentState = StartState.Name;
-        }
     }
 
-    public bool? Run(string inputString)
-    {
-        foreach (char c in inputString)
-        {
-            Transition(c);
-        }
-        return IsFinal(currentState); 
-    }
-
-    private bool IsFinal(string state) => state == "q2";
-
-    public void Reset() => currentState = "q0";
-}
     public class FA2 : FiniteAutomata
     {
         public FA2() : base(CreateStates()) { }
