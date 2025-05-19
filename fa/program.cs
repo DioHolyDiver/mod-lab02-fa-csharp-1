@@ -7,9 +7,9 @@ namespace fans
 {
     public class State
     {
-        public string Name { get; }
+        public string Name { get; set; }
         public Dictionary<char, State> Transitions { get; } = new Dictionary<char, State>();
-        public bool IsFinal { get; }
+        public bool IsFinal { get; set; }
 
         public State(string name, bool isFinal)
         {
@@ -17,6 +17,7 @@ namespace fans
             IsFinal = isFinal;
         }
     }
+
     public abstract class FiniteAutomata
     {
         protected readonly State StartState;
@@ -31,35 +32,54 @@ namespace fans
             State current = StartState;
             foreach (char ch in input)
             {
-                if (!current.Transitions.ContainsKey(ch))
-                    return false;
+                if (!current.Transitions.ContainsKey(ch)) return false;
                 current = current.Transitions[ch];
             }
             return current.IsFinal;
         }
     }
-    public class FA1
-{
-    private string currentState;
 
-    public FA1() => Reset();
-
-    public void Transition(char inputChar)
+    public class FA1 : FiniteAutomata
     {
-        switch (currentState)
+        private string _currentState;
+        
+        public FA1() : base(CreateStates())
         {
-            case "q0":
-                if (inputChar == '0') currentState = "q1";
-                else currentState = "q0"; 
-                break;
-            case "q1":
-                if (inputChar == '0') currentState = "q0";
-                else currentState = "q2"; 
-                break;
-            case "q2":
-                if (inputChar == '0') currentState = "q0";
-                else currentState = "q2"; 
-                break;
+            Reset();
+        }
+
+        private static State CreateStates()
+        {
+            var q0 = new State("q0", false);
+            var q1 = new State("q1", false);
+            var q2 = new State("q2", true);
+            
+            q0.Transitions['0'] = q1;
+            q0.Transitions['1'] = q0;
+
+            q1.Transitions['0'] = q0;
+            q1.Transitions['1'] = q2;
+
+            q2.Transitions['0'] = q0;
+            q2.Transitions['1'] = q2;
+
+            return q0;
+        }
+
+        public override bool Run(string input)
+        {
+            State current = StartState;
+            foreach (var ch in input)
+            {
+                if (!current.Transitions.ContainsKey(ch)) return false;
+                current = current.Transitions[ch];
+            }
+            return current.IsFinal;
+        }
+
+        public void Reset()
+        {
+            _currentState = StartState.Name;
         }
     }
 
