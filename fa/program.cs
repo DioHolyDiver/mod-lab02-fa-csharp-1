@@ -9,59 +9,95 @@ namespace fans
     {
         public string Name { get; }
         public Dictionary<char, State> Transitions { get; } = new Dictionary<char, State>();
-        public bool IsAcceptState { get; }
-
-        public State(string name, bool isAcceptState)
+        public bool IsFinal { get; }
+        public State(string name, bool isFinal)
         {
             Name = name;
-            IsAcceptState = isAcceptState;
+            IsFinal = isFinal;
         }
     }
-    public class FiniteAutomaton
+    public abstract class FiniteAutomata
     {
-        private readonly State initialState;
-
-        public FiniteAutomaton()
+        protected readonly State StartState;
+        protected FiniteAutomata(State startState)
         {
-            var stateA = new State("a", false);
-            var stateB = new State("b", false);
-            var stateC = new State("c", true);
-            stateA.Transitions.Add('0', stateA);
-            stateA.Transitions.Add('1', stateB);
-            stateB.Transitions.Add('0', stateC);
-            stateB.Transitions.Add('1', stateA);
-            stateC.Transitions.Add('0', stateB);
-            stateC.Transitions.Add('1', stateC);
-            initialState = stateA;
+            StartState = startState;
         }
-        public bool? Run(IEnumerable<char> symbols)
+        public bool Run(string input)
         {
-            State current = initialState;
-            foreach (var symbol in symbols)
+            State current = StartState;
+            foreach (char ch in input)
             {
-                if (!current.Transitions.ContainsKey(symbol))
-                    return null;
-                current = current.Transitions[symbol];
+                if (!current.Transitions.ContainsKey(ch))
+                    return false;
+                current = current.Transitions[ch];
             }
-            return current.IsAcceptState;
+            return current.IsFinal;
+        }
+    }
+    public class FA1 : FiniteAutomata
+    {
+        public FA1() : base(CreateStates()) { }
+        private static State CreateStates()
+        {
+            var a = new State("a", false);
+            var b = new State("b", false);
+            var c = new State("c", true);
+            var d = new State("d", false);
+            a.Transitions['0'] = b;
+            a.Transitions['1'] = a;
+            b.Transitions['1'] = c;
+            b.Transitions['0'] = d;
+            c.Transitions['0'] = d;
+            c.Transitions['1'] = c;
+            d.Transitions['0'] = d;
+            d.Transitions['1'] = d;
+            return a;
+        }
+    }
+
+    public class FA2 : FiniteAutomata
+    {
+        public FA2() : base(CreateStates()) { }
+        private static State CreateStates()
+        {
+            var a = new State("a", false);
+            var b = new State("b", false);
+            var c = new State("c", false);
+            var d = new State("d", true);
+            a.Transitions['0'] = b;
+            a.Transitions['1'] = c;
+            b.Transitions['0'] = a;
+            b.Transitions['1'] = d;
+            c.Transitions['0'] = d;
+            c.Transitions['1'] = a;
+            d.Transitions['0'] = c;
+            d.Transitions['1'] = b;
+            return a;
+        }
+    }
+    public class FA3 : FiniteAutomata
+    {
+        public FA3() : base(CreateStates()) { }
+        private static State CreateStates()
+        {
+            var a = new State("a", false);
+            var b = new State("b", false);
+            var c = new State("c", true);
+            a.Transitions['0'] = a;
+            a.Transitions['1'] = b;
+            b.Transitions['0'] = a;
+            b.Transitions['1'] = c;
+            c.Transitions['0'] = c;
+            c.Transitions['1'] = c;
+
+            return a;
         }
     }
     class Program
     {
         static void Main(string[] args)
         {
-            string input = "0000010111";
-            FiniteAutomaton automaton = new FiniteAutomaton();
-            bool? result = automaton.Run(input);
-
-            if (result.HasValue)
-            {
-                Console.WriteLine($"Последовательность принята: {result.Value}");
-            }
-            else
-            {
-                Console.WriteLine("Неверный символ в последовательности");
-            }
         }
     }
 }
