@@ -17,7 +17,6 @@ namespace fans
             IsFinal = isFinal;
         }
     }
-
     public abstract class FiniteAutomata
     {
         protected readonly State StartState;
@@ -44,14 +43,11 @@ namespace fans
         {
             var s0 = new State("s0", false);
             var s1 = new State("s1", false);
-            var s2 = new State("s2", false);
             var final = new State("final", true);
             s0.Transitions['0'] = s1;
             s0.Transitions['1'] = s0;
-            s1.Transitions['1'] = s2;
+            s1.Transitions['1'] = final;
             s1.Transitions['0'] = s0;
-            s2.Transitions['0'] = s0;
-            s2.Transitions['1'] = s2;
             final.Transitions['0'] = s0;
             final.Transitions['1'] = final;
             return s0;
