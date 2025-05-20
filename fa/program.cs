@@ -1,4 +1,4 @@
-namespace mod_lab02_fa_csharp.fa
+namespace fans
 {
     public class State
     {
