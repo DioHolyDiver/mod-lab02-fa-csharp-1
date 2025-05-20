@@ -1,6 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using State;
+using fans;
 namespace NET
 {
     [TestClass]
