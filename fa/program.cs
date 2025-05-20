@@ -18,49 +18,52 @@ namespace fans
         }
     }
 
-    public abstract class FiniteAutomata
+    public class FA1
     {
-        protected readonly State StartState;
+        private readonly State q0state;
+        private readonly State q1state;
+        private readonly State q2state;
+        private readonly State q3state;
+        private readonly State q4state;
 
-        protected FiniteAutomata(State startState)
+        public FA1()
         {
-            StartState = startState;
+            q0state = new State("q0", false);
+            q1state = new State("q1", false);
+            q2state = new State("q2", true);
+            q3state = new State("q3", false);
+            q4state = new State("q4", false);
+
+            // Установка переходов между состояниями
+            q0state.Transitions.Add('0', q2state);
+            q0state.Transitions.Add('1', q3state);
+            q1state.Transitions.Add('0', q4state);
+            q1state.Transitions.Add('1', q2state);
+            q2state.Transitions.Add('0', q4state);
+            q2state.Transitions.Add('1', q2state);
+            q3state.Transitions.Add('0', q2state);
+            q3state.Transitions.Add('1', q3state);
+            q4state.Transitions.Add('0', q4state);
+            q4state.Transitions.Add('1', q4state);
         }
 
-        public virtual bool Run(string input)
+        public bool Run(string input)
         {
-            State current = StartState;
+            State currentState = q0state;
+
             foreach (char ch in input)
             {
-                if (!current.Transitions.ContainsKey(ch)) return false;
-                current = current.Transitions[ch];
+                if (!currentState.Transitions.TryGetValue(ch, out var nextState))
+                {
+                    return false; // Недопустимый символ
+                }
+                currentState = nextState;
             }
-            return current.IsFinal;
+
+            return currentState.IsFinal;
         }
     }
-
-    public class FA1 : FiniteAutomata
-    {
-        public FA1() : base(CreateStates()) {}
-
-        private static State CreateStates()
-        {
-            var q0 = new State("q0", false);
-            var q1 = new State("q1", false);
-            var q2 = new State("q2", true);
-
-            q0.Transitions['0'] = q1;
-            q0.Transitions['1'] = q0;
-
-            q1.Transitions['0'] = q0;
-            q1.Transitions['1'] = q2;
-
-            q2.Transitions['0'] = q0;
-            q2.Transitions['1'] = q2;
-
-            return q0;
-        }
-    }
+}
 
     public class FA2 : FiniteAutomata
     {
