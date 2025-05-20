@@ -14,7 +14,7 @@ namespace fans
     }
 
 
-    public abstract class Fa
+    public abstract class FA
     {
         protected bool Run(IEnumerable<char> s, State initState)
         {
@@ -29,10 +29,10 @@ namespace fans
         }
     }
 
-    public class Fa1 : Fa
+    public class FA1 : FA
     {
         private readonly State _initState;
-        public Fa1()
+        public FA1()
         {
             var a = new State("a", false);
             var b = new State("b", false);
@@ -51,11 +51,11 @@ namespace fans
         public bool Run(IEnumerable<char> s) => Run(s, _initState);
     }
 
-    public class Fa2 : Fa
+    public class FA2 : FA
     {
         private readonly State _initState;
 
-        public Fa2()
+        public FA2()
         {
             var a = new State("a", false);
             var b = new State("b", false);
@@ -76,11 +76,11 @@ namespace fans
         public bool Run(IEnumerable<char> s) => Run(s, _initState);
     }
 
-    public class Fa3 : Fa
+    public class FA3 : FA
     {
         private readonly State _initState;
 
-        public Fa3()
+        public FA3()
         {
             var a = new State("a", false);
             var b = new State("b", false);
@@ -104,12 +104,12 @@ namespace fans
         static void Main(string[] args)
         {
             const string str = "01111";
-            var fa1 = new Fa1();
-            var fa2 = new Fa2();
-            var fa3 = new Fa3();
-            var result1 = fa1.Run(str);
-            var result2 = fa2.Run(str);
-            var result3 = fa3.Run(str);
+            var FA1 = new FA1();
+            var FA2 = new FA2();
+            var FA3 = new FA3();
+            var result1 = FA1.Run(str);
+            var result2 = FA2.Run(str);
+            var result3 = FA3.Run(str);
             Console.WriteLine(result1);
             Console.WriteLine(result2);
             Console.WriteLine(result3);
